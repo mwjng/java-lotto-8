@@ -31,6 +31,10 @@ public class PurchaseAmount {
         }
     }
 
+    public int toLottoCount() {
+        return (int) (amount / LOTTO_PRICE);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -3,8 +3,11 @@ package lotto.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class PurchaseAmountTest {
@@ -48,5 +51,25 @@ class PurchaseAmountTest {
         assertThatThrownBy(() -> PurchaseAmount.from(inputPurchaseAmount))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("구입 금액은 1000원 단위로 입력해야 합니다.");
+    }
+
+    private static Stream<Arguments> purchaseAmountAndLottoCountProvider() {
+        return Stream.of(
+                Arguments.of(PurchaseAmount.of(1_000), 1),
+                Arguments.of(PurchaseAmount.of(8_000), 8),
+                Arguments.of(PurchaseAmount.of(35000), 35),
+                Arguments.of(PurchaseAmount.of(100000), 100)
+        );
+    }
+
+    @DisplayName("구입금액으로 구매가능한 로또 개수를 반환한다")
+    @ParameterizedTest
+    @MethodSource("purchaseAmountAndLottoCountProvider")
+    void 구입금액으로_구매가능한_로또_개수를_반환한다(PurchaseAmount purchaseAmount, int expectedLottoCount) {
+        // when
+        int lottoCount = purchaseAmount.toLottoCount();
+
+        // then
+        assertThat(lottoCount).isEqualTo(expectedLottoCount);
     }
 }

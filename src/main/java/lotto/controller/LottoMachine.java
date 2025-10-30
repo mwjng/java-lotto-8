@@ -1,6 +1,8 @@
 package lotto.controller;
 
+import lotto.domain.Lottos;
 import lotto.domain.PurchaseAmount;
+import lotto.dto.LottosResponse;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -10,6 +12,12 @@ public class LottoMachine {
 
     public void run() {
         PurchaseAmount purchaseAmount = readInputPurchaseAmount();
+
+        int lottoCount = purchaseAmount.toLottoCount();
+        outputView.showPurchasedLottoCountMessage(lottoCount);
+
+        Lottos lottos = Lottos.create(lottoCount);
+        showPurchasedLottos(lottos);
     }
 
     private PurchaseAmount readInputPurchaseAmount() {
@@ -22,5 +30,10 @@ public class LottoMachine {
                 outputView.showErrorMessage(e);
             }
         }
+    }
+
+    private void showPurchasedLottos(Lottos lottos) {
+        LottosResponse lottosResponse = LottosResponse.from(lottos);
+        outputView.showPurchasedLottos(lottosResponse);
     }
 }
