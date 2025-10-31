@@ -37,11 +37,11 @@ public enum Rank {
     };
 
     private final String description;
-    private final PrizeAmount prizeAmount;
+    private final long prizeAmount;
 
-    Rank(String description, long amount) {
+    Rank(String description, long prizeAmount) {
         this.description = description;
-        this.prizeAmount = PrizeAmount.of(amount);
+        this.prizeAmount = prizeAmount;
     }
 
     public static Optional<Rank> from(int matchCount, boolean matchBonus) {
@@ -51,7 +51,7 @@ public enum Rank {
     }
 
     public long getPrizeAmount() {
-        return prizeAmount.getAmount();
+        return prizeAmount;
     }
 
     public abstract boolean supports(int matchCount, boolean matchBonus);
