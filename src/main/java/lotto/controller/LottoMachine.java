@@ -1,8 +1,11 @@
 package lotto.controller;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoNumber;
 import lotto.domain.Lottos;
 import lotto.domain.PurchaseAmount;
+import lotto.domain.WinningLotto;
+import lotto.dto.BonusNumberRequest;
 import lotto.dto.LottosResponse;
 import lotto.dto.WinningNumbersRequest;
 import lotto.view.InputView;
@@ -21,7 +24,7 @@ public class LottoMachine {
         Lottos lottos = Lottos.create(lottoCount);
         showPurchasedLottos(lottos);
 
-        Lotto winningNumbers = readInputWinningNumbers();
+        WinningLotto winningLotto = readInputWinningLotto();
     }
 
     private PurchaseAmount readInputPurchaseAmount() {
@@ -42,6 +45,19 @@ public class LottoMachine {
         outputView.showPurchasedLottos(lottosResponse);
     }
 
+    private WinningLotto readInputWinningLotto() {
+        Lotto winningNumbers = readInputWinningNumbers();
+
+        while (true) {
+            try {
+                LottoNumber bonusNumber = readInputBonusNumber();
+                return WinningLotto.of(winningNumbers, bonusNumber);
+            } catch (IllegalArgumentException e) {
+                outputView.showErrorMessage(e);
+            }
+        }
+    }
+
     private Lotto readInputWinningNumbers() {
         while (true) {
             try {
@@ -54,5 +70,13 @@ public class LottoMachine {
                 outputView.showErrorMessage(e);
             }
         }
+    }
+
+    private LottoNumber readInputBonusNumber() {
+        outputView.requestInputBonusNumber();
+        String inputBonusNumber = inputView.read();
+
+        BonusNumberRequest bonusNumberRequest = BonusNumberRequest.from(inputBonusNumber);
+        return bonusNumberRequest.toLottoNumber();
     }
 }
