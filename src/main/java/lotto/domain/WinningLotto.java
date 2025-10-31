@@ -16,6 +16,13 @@ public class WinningLotto {
         return new WinningLotto(winningNumbers, bonusNumber);
     }
 
+    public LottoResult match(Lotto lotto) {
+        int matchCount = winningNumbers.countMatch(lotto);
+        boolean matchBonus = lotto.contains(bonusNumber);
+
+        return LottoResult.of(matchCount, matchBonus);
+    }
+
     private void validateNoDuplicate(Lotto winningNumbers, LottoNumber bonusNumber) {
         if (winningNumbers.contains(bonusNumber)) {
             throw new IllegalArgumentException(BONUS_NUMBER_DUPLICATE_ERROR_MESSAGE);

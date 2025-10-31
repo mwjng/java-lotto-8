@@ -70,4 +70,23 @@ class LottoTest {
         // then
         assertThat(result).isEqualTo(expected);
     }
+
+    private static Stream<Arguments> lottoMatchCountProvider() {
+        return Stream.of(
+                Arguments.of(lotto(List.of(1, 2, 3, 4, 5, 6)), lotto(List.of(3, 4, 5, 6, 7, 8)), 4),
+                Arguments.of(lotto(List.of(2, 3, 4, 5, 6, 7)), lotto(List.of(3, 4, 5, 6, 7, 8)), 5),
+                Arguments.of(lotto(List.of(1, 2, 3, 4, 5, 6)), lotto(List.of(7, 8, 9, 10, 11, 12)), 0)
+        );
+    }
+
+    @DisplayName("일치하는 숫자 개수를 반환한다")
+    @ParameterizedTest
+    @MethodSource("lottoMatchCountProvider")
+    void 일치하는_숫자_개수를_반환한다(Lotto lotto, Lotto otherLotto, int expected) {
+        // when
+        int countMatch = lotto.countMatch(otherLotto);
+
+        // then
+        assertThat(countMatch).isEqualTo(expected);
+    }
 }

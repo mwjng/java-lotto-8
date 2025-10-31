@@ -1,9 +1,15 @@
 package lotto.controller;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lotto.domain.Lotto;
 import lotto.domain.LottoNumber;
+import lotto.domain.LottoResult;
 import lotto.domain.Lottos;
 import lotto.domain.PurchaseAmount;
+import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
 import lotto.dto.BonusNumberRequest;
 import lotto.dto.LottosResponse;
@@ -25,6 +31,20 @@ public class LottoMachine {
         showPurchasedLottos(lottos);
 
         WinningLotto winningLotto = readInputWinningLotto();
+
+        List<LottoResult> lottoResults = lottos.getLottos().stream()
+                .map(winningLotto::match)
+                .toList();
+
+        Map<Rank, Integer> rankCount = lottoResults.stream()
+                .map(LottoResult::toRank)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.groupingBy(rank -> rank,
+                        Collectors.collectingAndThen(Collectors.counting(), Long::intValue)));
+
+        outputView.showWinningStatisticsMessage();
+        outputView.showWinningStatistics(rankCount);
     }
 
     private PurchaseAmount readInputPurchaseAmount() {

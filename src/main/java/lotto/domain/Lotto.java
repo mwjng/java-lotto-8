@@ -24,6 +24,12 @@ public class Lotto {
         return numbers.contains(lottoNumber);
     }
 
+    public int countMatch(Lotto lotto) {
+        return (int) numbers.stream()
+                .filter(lotto::contains)
+                .count();
+    }
+
     public List<Integer> getNumbers() {
         return numbers.stream()
                 .map(LottoNumber::getNumber)
