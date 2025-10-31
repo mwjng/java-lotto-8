@@ -53,7 +53,7 @@ class PurchaseAmountTest {
                 .hasMessage("구입 금액은 1000원 단위로 입력해야 합니다.");
     }
 
-    private static Stream<Arguments> purchaseAmountAndLottoCountProvider() {
+    private static Stream<Arguments> purchaseAmountToLottoCountProvider() {
         return Stream.of(
                 Arguments.of(PurchaseAmount.of(1_000), 1),
                 Arguments.of(PurchaseAmount.of(8_000), 8),
@@ -64,7 +64,7 @@ class PurchaseAmountTest {
 
     @DisplayName("구입금액으로 구매가능한 로또 개수를 반환한다")
     @ParameterizedTest
-    @MethodSource("purchaseAmountAndLottoCountProvider")
+    @MethodSource("purchaseAmountToLottoCountProvider")
     void 구입금액으로_구매가능한_로또_개수를_반환한다(PurchaseAmount purchaseAmount, int expectedLottoCount) {
         // when
         int lottoCount = purchaseAmount.toLottoCount();
