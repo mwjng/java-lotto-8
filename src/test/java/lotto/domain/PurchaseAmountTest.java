@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -71,5 +72,18 @@ class PurchaseAmountTest {
 
         // then
         assertThat(lottoCount).isEqualTo(expectedLottoCount);
+    }
+
+    @DisplayName("구입금액 중에서 로또를 구매할 수 있는 금액만 반환한다")
+    @Test
+    void 구입금액_중에서_로또를_구매할_수_있는_금액만_반환한다() {
+        // given
+        PurchaseAmount purchaseAmount = PurchaseAmount.of(19000);
+
+        // when
+        long purchasableAmount = purchaseAmount.getPurchasableAmount();
+
+        // then
+        assertThat(purchasableAmount).isEqualTo(19000);
     }
 }

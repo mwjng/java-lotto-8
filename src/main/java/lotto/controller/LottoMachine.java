@@ -10,6 +10,7 @@ import lotto.domain.Lottos;
 import lotto.domain.PurchaseAmount;
 import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
+import lotto.domain.WinningStatistics;
 import lotto.dto.BonusNumberRequest;
 import lotto.dto.LottosResponse;
 import lotto.dto.WinningNumbersRequest;
@@ -30,20 +31,9 @@ public class LottoMachine {
         showPurchasedLottos(lottos);
 
         WinningLotto winningLotto = readInputWinningLotto();
+        WinningStatistics winningStatistics = createWinningStatistics(lottos, winningLotto);
 
-        List<LottoResult> lottoResults = lottos.getLottos().stream()
-                .map(winningLotto::match)
-                .toList();
-
-        Map<Rank, Integer> rankCount = lottoResults.stream()
-                .map(LottoResult::toRank)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.groupingBy(rank -> rank,
-                        Collectors.collectingAndThen(Collectors.counting(), Long::intValue)));
-
-        outputView.showWinningStatisticsMessage();
-        outputView.showWinningStatistics(rankCount);
+        showResultStatistics(winningStatistics, purchaseAmount);
     }
 
     private PurchaseAmount readInputPurchaseAmount() {
@@ -97,5 +87,30 @@ public class LottoMachine {
 
         BonusNumberRequest bonusNumberRequest = BonusNumberRequest.from(inputBonusNumber);
         return bonusNumberRequest.toLottoNumber();
+    }
+
+    private WinningStatistics createWinningStatistics(Lottos lottos, WinningLotto winningLotto) {
+        LottoResults lottoResults = matchAll(lottos, winningLotto);
+        Map<Rank, Integer> rankCount = lottoResults.countByRank();
+
+        return WinningStatistics.of(rankCount);
+    }
+
+    private LottoResults matchAll(Lottos lottos, WinningLotto winningLotto) {
+        List<LottoResult> results = lottos.getLottos().stream()
+                .map(winningLotto::match)
+                .toList();
+
+        return LottoResults.of(results);
+    }
+
+    private void showResultStatistics(WinningStatistics winningStatistics, PurchaseAmount purchaseAmount) {
+        outputView.showWinningStatistics(winningStatistics.getRankCount());
+        showProfitRate(winningStatistics, purchaseAmount);
+    }
+
+    private void showProfitRate(WinningStatistics winningStatistics, PurchaseAmount purchaseAmount) {
+        double profitRate = winningStatistics.calculateProfitRate(purchaseAmount);
+        outputView.showProfitRate(profitRate);
     }
 }

@@ -12,8 +12,10 @@ public class OutputView {
     private static final String INPUT_PURCHASE_AMOUNT_MESSAGE = "구입금액을 입력해 주세요.";
     private static final String INPUT_WINNING_LOTTO_MESSAGE = "당첨 번호를 입력해 주세요.";
     private static final String INPUT_BONUS_NUMBER_MESSAGE = "보너스 번호를 입력해 주세요.";
+
     private static final String LOTTO_COUNT_MESSAGE = "%d개를 구매했습니다.";
     private static final String WINNING_STATISTICS_MESSAGE = "당첨 통계";
+    private static final String PROFIT_RATE_MESSAGE = "총 수익률은 %.1f%%입니다.";
 
     private static final String ERROR_PREFIX = "[ERROR] ";
     private static final String LOTTO_NUMBER_DELIMITER = ", ";
@@ -43,22 +45,16 @@ public class OutputView {
         lottoResponses.forEach(this::showPurchasedLotto);
     }
 
-    public void showWinningStatisticsMessage() {
-        System.out.println("\n" + WINNING_STATISTICS_MESSAGE);
-    }
-
     public void showWinningStatistics(Map<Rank, Integer> rankCount) {
+        System.out.println("\n" + WINNING_STATISTICS_MESSAGE);
         System.out.println(STATISTICS_DIVIDER);
 
         Arrays.stream(RankDisplay.values())
                 .forEach(rankDisplay -> showRankResult(rankCount, rankDisplay));
     }
 
-    private void showRankResult(Map<Rank, Integer> rankCount, RankDisplay rankDisplay) {
-        Rank rank = rankDisplay.getRank();
-        int count = rankCount.getOrDefault(rank, DEFAULT_RANK_COUNT);
-
-        System.out.println(rankDisplay.getDisplay(count));
+    public void showProfitRate(double profitRate) {
+        System.out.printf(PROFIT_RATE_MESSAGE, profitRate);
     }
 
     public void showErrorMessage(Exception e) {
@@ -70,5 +66,12 @@ public class OutputView {
         String joinedLotto = String.join(LOTTO_NUMBER_DELIMITER, lotto);
 
         System.out.printf(LOTTO_NUMBER_FORMAT + "\n", joinedLotto);
+    }
+
+    private void showRankResult(Map<Rank, Integer> rankCount, RankDisplay rankDisplay) {
+        Rank rank = rankDisplay.getRank();
+        int count = rankCount.getOrDefault(rank, DEFAULT_RANK_COUNT);
+
+        System.out.println(rankDisplay.getDisplay(count));
     }
 }

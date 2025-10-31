@@ -35,6 +35,10 @@ public class PurchaseAmount {
         return (int) (amount / LOTTO_PRICE);
     }
 
+    public long getPurchasableAmount() {
+        return toLottoCount() * LOTTO_PRICE;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
