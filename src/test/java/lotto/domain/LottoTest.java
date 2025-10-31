@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import static lotto.fixture.LottoFixture.lotto;
 import static lotto.fixture.LottoFixture.lottoNumbers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -52,10 +53,10 @@ class LottoTest {
 
     private static Stream<Arguments> lottoContainsProvider() {
         return Stream.of(
-                Arguments.of(Lotto.of(lottoNumbers(List.of(1,2,3,4,5,6))), LottoNumber.of(1), true),
-                Arguments.of(Lotto.of(lottoNumbers(List.of(1,2,3,4,5,6))), LottoNumber.of(6), true),
-                Arguments.of(Lotto.of(lottoNumbers(List.of(1,2,3,4,5,6))), LottoNumber.of(7), false),
-                Arguments.of(Lotto.of(lottoNumbers(List.of(1,2,3,4,5,6))), LottoNumber.of(45), false)
+                Arguments.of(lotto(List.of(1, 2, 3, 4, 5, 6)), LottoNumber.of(1), true),
+                Arguments.of(lotto(List.of(1, 2, 3, 4, 5, 6)), LottoNumber.of(6), true),
+                Arguments.of(lotto(List.of(1, 2, 3, 4, 5, 6)), LottoNumber.of(7), false),
+                Arguments.of(lotto(List.of(1, 2, 3, 4, 5, 6)), LottoNumber.of(45), false)
         );
     }
 

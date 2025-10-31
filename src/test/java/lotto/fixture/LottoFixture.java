@@ -1,6 +1,7 @@
 package lotto.fixture;
 
 import java.util.List;
+import lotto.domain.Lotto;
 import lotto.domain.LottoNumber;
 
 public final class LottoFixture {
@@ -12,5 +13,10 @@ public final class LottoFixture {
         return numbers.stream()
                 .map(LottoNumber::of)
                 .toList();
+    }
+
+    public static Lotto lotto(List<Integer> numbers) {
+        List<LottoNumber> lottoNumbers = lottoNumbers(numbers);
+        return Lotto.of(lottoNumbers);
     }
 }
