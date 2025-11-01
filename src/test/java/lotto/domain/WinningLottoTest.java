@@ -3,6 +3,7 @@ package lotto.domain;
 import static lotto.fixture.LottoFixture.lotto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.groups.Tuple.tuple;
 
 import java.util.List;
 import lotto.dto.BonusNumberRequest;
@@ -44,21 +45,32 @@ WinningLottoTest {
                 .hasMessage("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
     }
 
-    @DisplayName("로또를 비교하여 LottoResult를 반환한다")
+    @DisplayName("모든 로또를 비교하여 LottoResults를 반환한다")
     @Test
     void 로또를_비교하여_LottoResult를_반환한다() {
         // given
-        Lotto lotto = lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lotto winning = lotto(List.of(1, 2, 3, 4, 5, 6));
         LottoNumber bonusNumber = LottoNumber.of(7);
-        WinningLotto winningLotto = WinningLotto.of(lotto, bonusNumber);
-        Lotto otherLotto = lotto(List.of(1, 2, 3, 4, 5, 6));
+        WinningLotto winningLotto = WinningLotto.of(winning, bonusNumber);
+
+        Lottos lottos = Lottos.of(
+                List.of(
+                        lotto(List.of(1, 2, 3, 4, 5, 6)),
+                        lotto(List.of(4, 5, 6, 7, 8, 9)),
+                        lotto(List.of(9, 10, 11, 12, 13, 14))
+                )
+        );
 
         // when
-        LottoResult lottoResult = winningLotto.match(otherLotto);
+        LottoResults lottoResults = winningLotto.matchAll(lottos);
 
         // then
-        assertThat(lottoResult).isNotNull()
+        assertThat(lottoResults.getResults()).hasSize(3)
                 .extracting("matchCount", "matchBonus")
-                .containsExactly(6, false);
+                .containsExactlyInAnyOrder(
+                        tuple(6, false),
+                        tuple(3, true),
+                        tuple(0, false)
+                );
     }
 }

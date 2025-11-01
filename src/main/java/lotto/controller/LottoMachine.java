@@ -90,18 +90,10 @@ public class LottoMachine {
     }
 
     private WinningStatistics createWinningStatistics(Lottos lottos, WinningLotto winningLotto) {
-        LottoResults lottoResults = matchAll(lottos, winningLotto);
+        LottoResults lottoResults = winningLotto.matchAll(lottos);
         Map<Rank, Integer> rankCount = lottoResults.countByRank();
 
         return WinningStatistics.of(rankCount);
-    }
-
-    private LottoResults matchAll(Lottos lottos, WinningLotto winningLotto) {
-        List<LottoResult> results = lottos.getLottos().stream()
-                .map(winningLotto::match)
-                .toList();
-
-        return LottoResults.of(results);
     }
 
     private void showResultStatistics(WinningStatistics winningStatistics, PurchaseAmount purchaseAmount) {

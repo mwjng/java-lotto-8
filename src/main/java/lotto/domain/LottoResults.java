@@ -25,4 +25,8 @@ public class LottoResults {
                         Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
                 ));
     }
+
+    public List<LottoResult> getResults() {
+        return List.copyOf(results);
+    }
 }
