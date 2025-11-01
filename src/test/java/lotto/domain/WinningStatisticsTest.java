@@ -3,6 +3,7 @@ package lotto.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,22 @@ class WinningStatisticsTest {
 
         // then
         assertThat(winningStatistics.getRankCount()).isEqualTo(rankCount);
+    }
+
+    @DisplayName("당첨 결과를 집계하여 WinningStatistics를 생성한다")
+    @Test
+    void 당첨_결과를_집계하여_WinningStatistics를_생성한다() {
+        // given
+        List<Rank> ranks = List.of(Rank.FIRST, Rank.SECOND, Rank.THIRD, Rank.THIRD);
+
+        // when
+        WinningStatistics winningStatistics = WinningStatistics.from(ranks);
+
+        // then
+        assertThat(winningStatistics.getRankCount()).hasSize(3)
+                .containsEntry(Rank.FIRST, 1)
+                .containsEntry(Rank.SECOND, 1)
+                .containsEntry(Rank.THIRD, 2);
     }
 
     @DisplayName("수익률을 계산한다")

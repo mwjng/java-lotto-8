@@ -1,6 +1,8 @@
 package lotto.domain;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class WinningStatistics {
     private final Map<Rank, Integer> rankCount;
@@ -11,6 +13,16 @@ public class WinningStatistics {
 
     public static WinningStatistics of(Map<Rank, Integer> rankCount) {
         return new WinningStatistics(rankCount);
+    }
+
+    public static WinningStatistics from(List<Rank> ranks) {
+        Map<Rank, Integer> rankCount = ranks.stream()
+                .collect(Collectors.groupingBy(
+                        rank -> rank,
+                        Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
+                ));
+
+        return of(rankCount);
     }
 
     public double calculateProfitRate(PurchaseAmount purchaseAmount) {

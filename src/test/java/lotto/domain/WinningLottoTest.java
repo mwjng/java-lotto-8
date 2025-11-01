@@ -3,7 +3,6 @@ package lotto.domain;
 import static lotto.fixture.LottoFixture.lotto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.groups.Tuple.tuple;
 
 import java.util.List;
 import lotto.dto.BonusNumberRequest;
@@ -11,8 +10,7 @@ import lotto.dto.WinningNumbersRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class
-WinningLottoTest {
+class WinningLottoTest {
 
     @DisplayName("WinningLotto를 생성한다")
     @Test
@@ -45,9 +43,9 @@ WinningLottoTest {
                 .hasMessage("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
     }
 
-    @DisplayName("모든 로또를 비교하여 Ranks를 반환한다")
+    @DisplayName("모든 로또를 비교한다")
     @Test
-    void 로또를_비교하여_Ranks를_반환한다() {
+    void 모든_로또를_비교한다() {
         // given
         Lotto winning = lotto(List.of(1, 2, 3, 4, 5, 6));
         LottoNumber bonusNumber = LottoNumber.of(7);
@@ -62,10 +60,10 @@ WinningLottoTest {
         );
 
         // when
-        Ranks ranks = winningLotto.matchAll(lottos);
+        List<Rank> ranks = winningLotto.matchAll(lottos);
 
         // then
-        assertThat(ranks.getRanks()).hasSize(2)
+        assertThat(ranks).hasSize(2)
                 .containsExactlyInAnyOrder(Rank.FIRST, Rank.FIFTH);
     }
 }

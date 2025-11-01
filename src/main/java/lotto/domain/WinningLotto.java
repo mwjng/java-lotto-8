@@ -19,13 +19,11 @@ public class WinningLotto {
         return new WinningLotto(winningNumbers, bonusNumber);
     }
 
-    public Ranks matchAll(Lottos lottos) {
-        List<Rank> results = lottos.getLottos().stream()
+    public List<Rank> matchAll(Lottos lottos) {
+        return lottos.getLottos().stream()
                 .map(this::match)
                 .flatMap(Optional::stream)
                 .toList();
-
-        return Ranks.of(results);
     }
 
     private void validateNoDuplicate(Lotto winningNumbers, LottoNumber bonusNumber) {
