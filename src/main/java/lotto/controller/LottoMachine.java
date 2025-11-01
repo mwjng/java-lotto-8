@@ -1,14 +1,12 @@
 package lotto.controller;
 
-import java.util.List;
 import java.util.Map;
 import lotto.domain.Lotto;
 import lotto.domain.LottoNumber;
-import lotto.domain.LottoResult;
-import lotto.domain.LottoResults;
 import lotto.domain.Lottos;
 import lotto.domain.PurchaseAmount;
 import lotto.domain.Rank;
+import lotto.domain.Ranks;
 import lotto.domain.WinningLotto;
 import lotto.domain.WinningStatistics;
 import lotto.dto.BonusNumberRequest;
@@ -90,8 +88,8 @@ public class LottoMachine {
     }
 
     private WinningStatistics createWinningStatistics(Lottos lottos, WinningLotto winningLotto) {
-        LottoResults lottoResults = winningLotto.matchAll(lottos);
-        Map<Rank, Integer> rankCount = lottoResults.countByRank();
+        Ranks ranks = winningLotto.matchAll(lottos);
+        Map<Rank, Integer> rankCount = ranks.countByRank();
 
         return WinningStatistics.of(rankCount);
     }

@@ -1,6 +1,7 @@
 package lotto.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WinningLotto {
     private static final String BONUS_NUMBER_DUPLICATE_ERROR_MESSAGE = "보너스 번호는 당첨 번호와 중복될 수 없습니다.";
@@ -18,12 +19,13 @@ public class WinningLotto {
         return new WinningLotto(winningNumbers, bonusNumber);
     }
 
-    public LottoResults matchAll(Lottos lottos) {
-        List<LottoResult> results = lottos.getLottos().stream()
+    public Ranks matchAll(Lottos lottos) {
+        List<Rank> results = lottos.getLottos().stream()
                 .map(this::match)
+                .flatMap(Optional::stream)
                 .toList();
 
-        return LottoResults.of(results);
+        return Ranks.of(results);
     }
 
     private void validateNoDuplicate(Lotto winningNumbers, LottoNumber bonusNumber) {
@@ -32,10 +34,10 @@ public class WinningLotto {
         }
     }
 
-    private LottoResult match(Lotto lotto) {
+    private Optional<Rank> match(Lotto lotto) {
         int matchCount = winningNumbers.countMatch(lotto);
         boolean matchBonus = lotto.contains(bonusNumber);
 
-        return LottoResult.of(matchCount, matchBonus);
+        return Rank.from(matchCount, matchBonus);
     }
 }

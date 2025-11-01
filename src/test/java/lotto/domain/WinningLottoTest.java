@@ -45,9 +45,9 @@ WinningLottoTest {
                 .hasMessage("보너스 번호는 당첨 번호와 중복될 수 없습니다.");
     }
 
-    @DisplayName("모든 로또를 비교하여 LottoResults를 반환한다")
+    @DisplayName("모든 로또를 비교하여 Ranks를 반환한다")
     @Test
-    void 로또를_비교하여_LottoResult를_반환한다() {
+    void 로또를_비교하여_Ranks를_반환한다() {
         // given
         Lotto winning = lotto(List.of(1, 2, 3, 4, 5, 6));
         LottoNumber bonusNumber = LottoNumber.of(7);
@@ -62,15 +62,10 @@ WinningLottoTest {
         );
 
         // when
-        LottoResults lottoResults = winningLotto.matchAll(lottos);
+        Ranks ranks = winningLotto.matchAll(lottos);
 
         // then
-        assertThat(lottoResults.getResults()).hasSize(3)
-                .extracting("matchCount", "matchBonus")
-                .containsExactlyInAnyOrder(
-                        tuple(6, false),
-                        tuple(3, true),
-                        tuple(0, false)
-                );
+        assertThat(ranks.getRanks()).hasSize(2)
+                .containsExactlyInAnyOrder(Rank.FIRST, Rank.FIFTH);
     }
 }
