@@ -79,3 +79,27 @@
     - `총 당첨 금액 / 로또 구입 금액 * 100`
     - 수익률은 소수점 둘째 자리에서 반올림한다
     - 수익률을 출력하고 프로그램을 종료한다
+
+
+## 프로젝트 구조
+- `Application` : 프로그램의 진입점
+- `controller`
+  - `LottoMachine` : 도메인 객체와 뷰를 연결하고 조율하는 역할
+- `domain` 
+  - `LottoNumber` : 로또 번호를 나타내는 값 객체
+  - `Lotto` : 로또
+  - `Lottos` : 여러 장의 Lotto를 가지는 일급 컬렉션
+  - `PurchaseAmount` : 로또 구매 금액을 나타내는 값 객체
+  - `Rank` : 당첨 등수
+  - `WinningLotto` : 당첨 번호와 보너스 번호를 관리
+  - `WinningStatistics` : 여러 로또의 당첨 결과를 집계
+- `dto`
+  - `WinningNumbersRequest` : 당첨 번호 입력을 전달하는 DTO
+  - `BonusNumberRequest` : 보너스 번호 입력을 전달하는 DTO
+  - `LottoResponse` : 한 장의 로또를 뷰에 출력하기 위한 DTO
+  - `LottosResponse` : 여러 장의 로또를 한 번에 출력하기 위한 DTO
+- `view`
+  - `display`
+    - `RankDisplay` : 등수별 출력 형식을 관리
+  - `InputView` : 사용자로부터 데이터를 입력받는 역할
+  - `OutputView` : 콘솔에 정보를 출력하는 역할
