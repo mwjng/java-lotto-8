@@ -8,12 +8,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class LottosTest {
 
-    @DisplayName("여러 개의 로또를 생성한다")
+    @DisplayName("여러 개의 로또를 랜덤으로 생성한다")
     @ParameterizedTest
     @ValueSource(ints = {1, 8, 30, 100})
     void 여러_개의_로또를_생성한다(int givenLottoCount) {
         // when
-        Lottos lottos = Lottos.create(givenLottoCount);
+        Lottos lottos = Lottos.createRandomLottos(givenLottoCount);
 
         // then
         assertThat(lottos.getLottos()).hasSize(givenLottoCount);

@@ -1,5 +1,9 @@
 package lotto.domain;
 
+import static lotto.domain.LottoNumber.MAXIMUM_LOTTO_NUMBER;
+import static lotto.domain.LottoNumber.MINIMUM_LOTTO_NUMBER;
+
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.List;
 
 public class Lotto {
@@ -18,6 +22,17 @@ public class Lotto {
 
     public static Lotto of(List<LottoNumber> numbers) {
         return new Lotto(numbers);
+    }
+
+    public static Lotto createRandomLotto() {
+        List<Integer> generatedNumbers = Randoms.pickUniqueNumbersInRange(
+                MINIMUM_LOTTO_NUMBER, MAXIMUM_LOTTO_NUMBER, LOTTO_NUMBER_COUNT
+        );
+        List<LottoNumber> lottoNumbers = generatedNumbers.stream()
+                .map(LottoNumber::of)
+                .toList();
+
+        return of(lottoNumbers);
     }
 
     public boolean contains(LottoNumber lottoNumber) {

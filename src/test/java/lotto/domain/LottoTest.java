@@ -15,6 +15,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class LottoTest {
 
+    @DisplayName("로또를 랜덤한 숫자로 생성한다")
+    @Test
+    void 로또를_랜덤한_숫자로_생성한다() {
+        // when
+        Lotto lotto = Lotto.createRandomLotto();
+
+        // then
+        assertThat(lotto.getNumbers()).hasSize(6);
+    }
+
     @DisplayName("로또 번호의 개수가 6개가 넘어가면 예외가 발생한다")
     @Test
     void 로또_번호의_개수가_6개가_넘어가면_예외가_발생한다() {

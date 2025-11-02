@@ -24,7 +24,7 @@ public class LottoMachine {
         int lottoCount = purchaseAmount.toLottoCount();
         outputView.showPurchasedLottoCountMessage(lottoCount);
 
-        Lottos lottos = Lottos.create(lottoCount);
+        Lottos lottos = Lottos.createRandomLottos(lottoCount);
         showPurchasedLottos(lottos);
 
         WinningLotto winningLotto = readInputWinningLotto();
