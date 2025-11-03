@@ -26,10 +26,7 @@ public class WinningStatistics {
     }
 
     public double calculateProfitRate(PurchaseAmount purchaseAmount) {
-        long totalPrizeAmount = rankCount.entrySet().stream()
-                .mapToLong(entry -> entry.getKey().getPrizeAmount() * entry.getValue())
-                .sum();
-
+        long totalPrizeAmount = totalPrizeAmount();
         long purchasableAmount = purchaseAmount.getPurchasableAmount();
 
         return (double) totalPrizeAmount / purchasableAmount * 100;
@@ -37,5 +34,11 @@ public class WinningStatistics {
 
     public Map<Rank, Integer> getRankCount() {
         return Map.copyOf(rankCount);
+    }
+
+    private long totalPrizeAmount() {
+        return rankCount.entrySet().stream()
+                .mapToLong(entry -> entry.getKey().getPrizeAmount() * entry.getValue())
+                .sum();
     }
 }
